@@ -57,6 +57,9 @@ public class MeController {
     // 1. 내 정보 조회
     @GetMapping("/me")
     public ResponseEntity<?> me(Authentication auth) {
+        if (auth == null || auth.getPrincipal() == null){
+            return ResponseEntity.status(401).body("Unauthorized: 로그인이 필요합니다.");
+        }
         // 기존 방식: Principal에서 ID(Long) 바로 꺼내기
         Long uid = Long.valueOf(auth.getPrincipal().toString());
 

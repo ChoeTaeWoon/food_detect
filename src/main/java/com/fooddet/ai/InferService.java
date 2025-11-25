@@ -81,9 +81,9 @@ public class InferService {
     /**
      * 이미지를 분석하고 레시피 정보를 언어에 맞춰 반환합니다.
      * @param file 업로드된 이미지
-     * @param lang 언어 코드 ("ko" 또는 "en")
+     * @param locale 언어 코드 ("ko" 또는 "en")
      */
-    public FoodAnalysisResponse analyzeFood(MultipartFile file, String lang) throws IOException {
+    public FoodAnalysisResponse analyzeFood(MultipartFile file, String locale) throws IOException {
         // 1. FastAPI로 이미지 전송 및 예측 결과 수신
         PredictResponse aiResponse = callAiModel(file);
         String predictedName = aiResponse.getDish();
@@ -94,7 +94,7 @@ public class InferService {
         Food food = foodRepository.findByNameKo(predictedName)
                 .orElseThrow(() -> new IllegalArgumentException("레시피 정보를 찾을 수 없는 음식입니다: " + predictedName));
         // 3. 언어 설정에 맞춰 DTO 변환 후 반환
-        return mapToResponse(aiResponse, food, lang);
+        return mapToResponse(aiResponse, food, locale);
     }
 
     // FastAPI 호출 로직 분리
@@ -116,8 +116,8 @@ public class InferService {
     }
 
     // DTO 매핑 로직 (언어 처리)
-    private FoodAnalysisResponse mapToResponse(PredictResponse aiResponse, Food food, String lang) {
-        boolean isKorean = "ko".equalsIgnoreCase(lang);
+    private FoodAnalysisResponse mapToResponse(PredictResponse aiResponse, Food food, String locale) {
+        boolean isKorean = "ko".equalsIgnoreCase(locale);
 
         // 재료 리스트 변환
         List<IngredientDto> ingredients = food.getIngredients().stream()

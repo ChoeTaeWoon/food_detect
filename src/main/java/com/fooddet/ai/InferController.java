@@ -42,10 +42,10 @@ public class InferController {
     @PostMapping("/predict")
     public ResponseEntity<FoodAnalysisResponse> predict(
             @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "lang", defaultValue = "ko") String lang // 기본값 한국어
+            @RequestParam(value = "locale", defaultValue = "ko") String locale // 기본값 한국어
     ) throws IOException {
 
-        FoodAnalysisResponse response = inferService.analyzeFood(file, lang);
+        FoodAnalysisResponse response = inferService.analyzeFood(file, locale);
         return ResponseEntity.ok(response);
     }
 }
