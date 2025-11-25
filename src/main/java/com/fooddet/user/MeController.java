@@ -40,6 +40,8 @@
 
 
 package com.fooddet.user;
+import com.fooddet.history.FoodHistoryRepository;
+import com.fooddet.history.FoodHistory;            // [추가]
 
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
@@ -47,12 +49,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/users") // 경로 명시 (중요!)
 @RequiredArgsConstructor
 public class MeController {
 
     private final UserRepository repo;
+    private final FoodHistoryRepository historyRepo; // 주입 필요
 
     // 1. 내 정보 조회
     @GetMapping("/me")
@@ -89,6 +96,29 @@ public class MeController {
 
         return ResponseEntity.ok(new MeResponse(u.getId(), u.getEmail(), u.getDisplayName(), u.getLocale()));
     }
+    @GetMapping("/me/history")
+    public ResponseEntity<?> getMyHistory(Authentication auth) {
+        if (auth == null || auth.getPrincipal() == null) {
+            return ResponseEntity.status(401).body("Unauthorized");
+        }
+
+        Long uid = Long.valueOf(auth.getPrincipal().toString());
+
+        // 기록 조회 (최신순 10개)
+        List<FoodHistory> histories = historyRepo.findTop10ByUserIdOrderByViewedAtDesc(uid);
+
+        // DTO 변환
+        List<FoodHistoryDto> response = histories.stream()
+                .map(h -> new FoodHistoryDto(
+                        h.getFood().getId(),
+                        h.getFood().getNameKo(),  // 기본값 한글, 필요 시 locale 처리 추가 가능
+                        h.getFood().getNameEn(),
+                        h.getViewedAt()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(response);
+    }
 
     // DTO 정의 (Record 사용)
     // nickname과 language로 필드명 통일 (User 엔티티와 맞춤)
@@ -98,4 +128,6 @@ public class MeController {
             @Size(max=80) String displayName,
             @Size(max=10) String locale // 이게 바로 언어 변경 필드입니다!
     ) {}
+    public record FoodHistoryDto(Long foodId, String nameKo, String nameEn, LocalDateTime viewedAt) {}
 }
+

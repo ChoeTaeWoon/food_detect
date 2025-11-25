@@ -65,7 +65,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-
+import com.fooddet.history.FoodHistory;          // [추가]
+import com.fooddet.history.FoodHistoryRepository; // [추가]
+import com.fooddet.user.User;                     // [추가]
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -77,13 +79,14 @@ public class InferService {
 
     private final WebClient webClient;
     private final FoodRepository foodRepository; // DB 접근용
+    private final FoodHistoryRepository historyRepo; // 주입 필요
 
     /**
      * 이미지를 분석하고 레시피 정보를 언어에 맞춰 반환합니다.
      * @param file 업로드된 이미지
      * @param locale 언어 코드 ("ko" 또는 "en")
      */
-    public FoodAnalysisResponse analyzeFood(MultipartFile file, String locale) throws IOException {
+    public FoodAnalysisResponse analyzeFood(MultipartFile file, String locale,User user) throws IOException {
         // 1. FastAPI로 이미지 전송 및 예측 결과 수신
         PredictResponse aiResponse = callAiModel(file);
         String predictedName = aiResponse.getDish();
@@ -93,6 +96,14 @@ public class InferService {
         // 2. DB에서 음식 정보 조회 (없으면 예외 발생 또는 null 처리)
         Food food = foodRepository.findByNameKo(predictedName)
                 .orElseThrow(() -> new IllegalArgumentException("레시피 정보를 찾을 수 없는 음식입니다: " + predictedName));
+        // [추가] 기록 저장 (로그인한 유저인 경우만)
+        if (user != null) {
+            FoodHistory history = FoodHistory.builder()
+                    .user(user)
+                    .food(food)
+                    .build();
+            historyRepo.save(history);
+        }
         // 3. 언어 설정에 맞춰 DTO 변환 후 반환
         return mapToResponse(aiResponse, food, locale);
     }
