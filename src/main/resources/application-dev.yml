@@ -1,45 +1,78 @@
+#server:
+#  address: 0.0.0.0
+#  port: 8080
+#
+#spring:
+#  datasource:
+##    url: jdbc:h2:file:./data/app_new;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        jdbc:
+#          time_zone: UTC
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#  servlet:
+#    multipart:
+#      max-file-size: 20MB
+#      max-request-size: 20MB
+#
+## 여기부터는 spring 밖(최상위)
+#fastapi:
+#  base-url: http://localhost:8000
+#  connect-timeout-ms: 4000
+#  read-timeout-ms: 30000
+#
+#app:
+#  upload:
+#    dir: ./uploads
+#  jwt:
+#    secret: "this-is-a-very-long-secret-key-32bytes-min-OK-123456"
+#    expiry-minutes: 10080
+#
+#logging:
+#  level:
+#    org.hibernate.SQL: debug
+
 server:
   address: 0.0.0.0
   port: 8080
 
 spring:
   datasource:
-#    url: jdbc:h2:file:./data/app_new;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    # 메모리 DB 사용 (재시작 시 초기화됨, 테스트에 최적)
     url: jdbc:h2:mem:testdb;MODE=PostgreSQL
     username: sa
     password:
     driver-class-name: org.h2.Driver
+
   jpa:
     hibernate:
-      ddl-auto: update
+      # data.sql과 충돌 방지를 위해 create-drop 사용 (시작 시 생성, 종료 시 삭제)
+      ddl-auto: create-drop
     properties:
       hibernate:
         format_sql: true
         jdbc:
           time_zone: UTC
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+
   servlet:
     multipart:
       max-file-size: 20MB
       max-request-size: 20MB
 
-# 여기부터는 spring 밖(최상위)
-fastapi:
-  base-url: http://localhost:8000
-  connect-timeout-ms: 4000
-  read-timeout-ms: 30000
-
-app:
-  upload:
-    dir: ./uploads
-  jwt:
-    secret: "this-is-a-very-long-secret-key-32bytes-min-OK-123456"
-    expiry-minutes: 10080
-
+# 개발 환경 로깅 설정
 logging:
   level:
-    org.hibernate.SQL: debug
-
+    root: info
+    org.hibernate.SQL: debug           # 쿼리 나가는 것 확인
+    org.hibernate.type.descriptor.sql: trace # 쿼리 파라미터 값 확인

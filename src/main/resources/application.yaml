@@ -1,29 +1,61 @@
+#spring:
+#  application:
+#    name: dev
+#  main:
+#    web-application-type: servlet
+#  h2:
+#    console:
+#      enabled: true
+#      path: /h2-console
+#      settings:
+#        web-allow-others: true
+#  sql:
+#    init:
+#      mode: always        # 항상 SQL 파일 실행 (필수)
+#  jpa:
+#    defer-datasource-initialization: true # Hibernate가 테이블 만든 후 데이터 넣기 (중요)
+#    hibernate:
+#      ddl-auto: create-drop  # 혹은 update (개발 중엔 create-drop 추천)
+#
+## 여기는 spring 밖(최상위)
+#app:
+#  fastapi:
+#    base-url: http://localhost:8000
+#    connect-timeout-ms: 4000
+#    read-timeout-ms: 30000
+#  jwt:
+#    secret: "test-secret-key-12345678901234567890"
+#    expiry-minutes: 60
+
+
 spring:
   application:
-    name: dev
-  main:
-    web-application-type: servlet
+    name: fooddet-api
+  profiles:
+    active: dev   # 실행 시 자동으로 application-dev.yaml을 읽음
+
+  # H2 Console 및 데이터 초기화 공통 설정
   h2:
     console:
       enabled: true
-      path: /h2-console
+      path: /h2
       settings:
         web-allow-others: true
   sql:
     init:
-      mode: always        # 항상 SQL 파일 실행 (필수)
+      mode: always
   jpa:
-    defer-datasource-initialization: true # Hibernate가 테이블 만든 후 데이터 넣기 (중요)
-    hibernate:
-      ddl-auto: create-drop  # 혹은 update (개발 중엔 create-drop 추천)
+    defer-datasource-initialization: true # 테이블 생성 후 data.sql 실행
 
-# 여기는 spring 밖(최상위)
+# 커스텀 설정 (공통)
 app:
   fastapi:
     base-url: http://localhost:8000
     connect-timeout-ms: 4000
     read-timeout-ms: 30000
   jwt:
-    secret: "test-secret-key-12345678901234567890"
+    secret: "test-secret-key-12345678901234567890" # 개발용 키
     expiry-minutes: 60
+  upload:
+    dir: ./uploads
 
