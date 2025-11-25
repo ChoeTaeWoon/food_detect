@@ -61,9 +61,12 @@ public class SecurityConfig {
                         // 프리플라이트 전부 허용
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // 공개 엔드포인트
-                        .requestMatchers("/auth/**", "/health","/h2/**", "/files/**","/classify").permitAll()
+                        .requestMatchers("/auth/**", "/health","/h2/**",
+                                "/files/**","/classify").permitAll()
+
                         // 나머지는 인증 필요
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
+//                        .anyRequest().authenticated()
                 )
 
                 // H2 콘솔 보려면 frameOptions 꺼야 함(개발 전용)
