@@ -49,8 +49,12 @@ server:
 
 spring:
   datasource:
+
     # 메모리 DB 사용 (재시작 시 초기화됨, 테스트에 최적)
     url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+    # [수정 후] 파일 모드 (끄면 ./data/fooddb 파일에 저장됨)
+#     ;AUTO_SERVER=TRUE 는 여러 곳에서 동시 접속 허용 옵션
+#    url: jdbc:h2:file:./data/fooddb;MODE=PostgreSQL;AUTO_SERVER=TRUE
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -59,6 +63,8 @@ spring:
     hibernate:
       # data.sql과 충돌 방지를 위해 create-drop 사용 (시작 시 생성, 종료 시 삭제)
       ddl-auto: create-drop
+      # [수정 후] update (있는 데이터 유지, 없으면 만듦)
+#      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

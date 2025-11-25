@@ -25,6 +25,8 @@ public class User {
     @Column(nullable=false)
     private Instant createdAt;
 
+
+
     @PrePersist
     void prePersist() {
         if (createdAt == null) createdAt = Instant.now();
