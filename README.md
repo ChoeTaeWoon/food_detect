@@ -1,14 +1,14 @@
-# 🍲 FoodDet: AI-Powered Korean Food Analysis Service
+#  FoodDet: AI-Powered Korean Food Analysis Service
 
 FoodDet은 사용자가 업로드한 음식 사진을 AI로 분석하여 음식명, 재료, 레시피 정보를 다국어(한국어/영어)로 제공하는 서비스입니다.
 
 ---
 
-## 🏗️ 1. System Architecture
+##  1. System Architecture
 
 본 프로젝트는 **Client - API Gateway - AI Service**가 분리된 계층형 아키텍처(Layered Architecture)를 따릅니다.
 
-### 🔹 Architecture Diagram
+### Architecture Diagram
 ```mermaid
 graph TD
 Client["📱 Frontend
@@ -31,7 +31,7 @@ Logic <-->|JPA / Hibernate| DB
 Logic <-->|HTTP / WebClient| AI
 
 ```
-### 🔹 Components Description
+###  Components Description
 | Component | Tech Stack | Description |
 | :--- | :--- | :--- |
 | **Client** | React / React Native | 사용자 인터페이스 및 이미지 업로드 처리 |
@@ -41,17 +41,19 @@ Logic <-->|HTTP / WebClient| AI
 
 ---
 
-## 💾 2. Data Architecture
+##  2. Data Architecture
 
 데이터베이스는 사용자(User), 음식(Food), 기록(History)을 중심으로 설계된 관계형 데이터 모델(RDBMS)입니다.
 
 ### 🔹 ER Diagram (Entity Relationship)
 ```mermaid
 erDiagram
-User ||--o{ FoodHistory : "views"
-Food ||--o{ FoodHistory : "is_viewed_in"
+
+User ||--o{ FoodHistory : "views (1:N)"  
+
 Food ||--|{ Ingredient : "has"
 Food ||--|{ RecipeStep : "has"
+Food ||--o{ FoodHistory : "is_viewed_in (1:N)"
 User {
     Long id PK
     String email
@@ -80,12 +82,13 @@ RecipeStep {
     String content_ko
 }
 
-FoodHistory {
-    Long id PK
-    Long user_id FK
-    Long food_id FK
-    DateTime viewed_at
-}
+
+ FoodHistory {
+        Long id PK
+        Long user_id FK
+        Long food_id FK
+        DateTime viewed_at
+    }
 
 ```
 ### 🔹 Data Flow
@@ -144,24 +147,10 @@ AI 모델이 분류할 수 있는 요리의 메인 정보를 담고 있는 테�
 | **내 정보 조회** | `GET` | `/api/users/me` | Header (Bearer Token) | `JSON` (User Info) |
 | **이미지 분석** | `POST` | `/api/ai/predict` | `Multipart` (file, locale) | `JSON` (Food, Recipe...) |
 | **기록 조회** | `GET` | `/api/users/me/history`| Header (Bearer Token) | `JSON` (History List) |
+| **음식 상세 조회** | `GET` | `/api/food/{id}`| Header (Bearer Token) Query:locale=ko/en | `JSON` (Food Detail) |
 
 ### 🔹 JSON Example (이미지 분석 결과)
-사용자가 이미지를 업로드하면(`POST /api/ai/predict`), 서버는 다음과 같은 **JSON** 데이터를 응답합니다.
-{
-  "success": true,
-  "message": "분석 완료",
-  "aiLabel": "kimchi_stew",
-  "confidence": 0.98,
-  "name": "김치찌개",
-  "description": "한국인이 사랑하는 얼큰한 찌개입니다.",
-  "ingredients": [
-    { "name": "김치", "amount": "200g" },
-    { "name": "돼지고기", "amount": "100g" }
-  ],
-  "recipeSteps": [
-    { "stepOrder": 1, "content": "고기를 볶습니다." }
-  ]
-}
+
 <img width="663" height="473" alt="image" src="https://github.com/user-attachments/assets/6026b566-0e2d-4b8e-8701-4ed4a9fbe37a" />
 
 ### 🔹 Data Exchange Protocol
