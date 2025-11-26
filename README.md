@@ -94,15 +94,50 @@ FoodHistory {
 3. **Data Mapping**: 반환된 라벨로 DB에서 `Food`, `Ingredient`, `RecipeStep` 정보를 조회합니다.
 4. **History Save**: 로그인한 사용자라면 `FoodHistory` 테이블에 조회 기록을 저장합니다.
 5. **Response**: 사용자의 언어 설정(`locale`)에 맞춰 번역된 데이터를 JSON으로 응답합니다.
-
 ---
+
+### 🔹 Table Details & Relationships
+
+#### 1️⃣ User (사용자 테이블)
+서비스에 가입한 회원 정보를 저장하는 테이블입니다.
+- **Relations**:
+  - **1:N (일대다) with `FoodHistory`**: 한 명의 사용자는 여러 개의 조회 기록을 가질 수 있습니다.
+- **Columns**: `id` (PK), `email` (ID), `password`, `locale` (언어 설정)
+
+#### 2️⃣ Food (음식 테이블)
+AI 모델이 분류할 수 있는 요리의 메인 정보를 담고 있는 테이블입니다.
+- **Relations**:
+  - **1:N (일대다) with `Ingredient`**: 하나의 음식은 여러 개의 재료 정보를 가집니다.
+  - **1:N (일대다) with `RecipeStep`**: 하나의 음식은 여러 단계의 조리 순서를 가집니다.
+  - **1:N (일대다) with `FoodHistory`**: 하나의 음식은 여러 사용자에 의해 조회될 수 있어, 여러 개의 기록 데이터를 생성합니다.
+- **Columns**: `id` (PK), `english_label` (AI 라벨 매핑 키), `name_ko`/`name_en` (다국어 이름)
+
+#### 3️⃣ Ingredient (재료 테이블)
+각 음식에 들어가는 개별 재료 정보를 저장하는 테이블입니다.
+- **Relations**:
+  - **N:1 (다대일) with `Food`**: 여러 개의 재료가 하나의 음식에 소속됩니다.
+- **Columns**: `id` (PK), `food_id` (FK), `name_ko`/`name_en` (재료명), `amount` (용량)
+
+#### 4️⃣ RecipeStep (레시피 테이블)
+음식을 만드는 조리 과정을 순서대로 저장하는 테이블입니다.
+- **Relations**:
+  - **N:1 (다대일) with `Food`**: 여러 단계의 조리 과정이 하나의 음식에 소속됩니다.
+- **Columns**: `id` (PK), `food_id` (FK), `step_order` (순서), `content_ko`/`content_en` (내용)
+
+#### 5️⃣ FoodHistory (조회 기록 테이블)
+사용자가 언제 어떤 음식을 조회했는지 로그를 저장하는 테이블입니다. 사용자(`User`)와 음식(`Food`) 사이의 **N:M (다대다) 관계를 해소**하는 연결 테이블 역할을 합니다.
+- **Relations**:
+  - **N:1 (다대일) with `User`**: 이 기록은 특정 사용자 한 명에게 속합니다.
+  - **N:1 (다대일) with `Food`**: 이 기록은 특정 음식 하나를 가리킵니다.
+- **Columns**: `id` (PK), `user_id` (FK), `food_id` (FK), `viewed_at` (조회 일시)
+
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 - Java 17+
 - Python 3.9+
-- Node.js (for Frontend)
+
 
 ### Run Backend
 
