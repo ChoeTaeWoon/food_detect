@@ -1,14 +1,14 @@
-# 🍲 FoodDet: AI-Powered Korean Food Analysis Service
+#  FoodDet: AI-Powered Korean Food Analysis Service
 
 FoodDet은 사용자가 업로드한 음식 사진을 AI로 분석하여 음식명, 재료, 레시피 정보를 다국어(한국어/영어)로 제공하는 서비스입니다.
 
 ---
 
-## 🏗️ 1. System Architecture
+##  1. System Architecture
 
 본 프로젝트는 **Client - API Gateway - AI Service**가 분리된 계층형 아키텍처(Layered Architecture)를 따릅니다.
 
-### 🔹 Architecture Diagram
+### Architecture Diagram
 ```mermaid
 graph TD
 Client["📱 Frontend
@@ -31,7 +31,7 @@ Logic <-->|JPA / Hibernate| DB
 Logic <-->|HTTP / WebClient| AI
 
 ```
-### 🔹 Components Description
+###  Components Description
 | Component | Tech Stack | Description |
 | :--- | :--- | :--- |
 | **Client** | React / React Native | 사용자 인터페이스 및 이미지 업로드 처리 |
@@ -41,7 +41,7 @@ Logic <-->|HTTP / WebClient| AI
 
 ---
 
-## 💾 2. Data Architecture
+##  2. Data Architecture
 
 데이터베이스는 사용자(User), 음식(Food), 기록(History)을 중심으로 설계된 관계형 데이터 모델(RDBMS)입니다.
 
@@ -49,9 +49,11 @@ Logic <-->|HTTP / WebClient| AI
 ```mermaid
 erDiagram
 User ||--o{ FoodHistory : "views"
+ User ||--o{ FoodHistory : "views (1:N)"  
 Food ||--o{ FoodHistory : "is_viewed_in"
 Food ||--|{ Ingredient : "has"
 Food ||--|{ RecipeStep : "has"
+Food ||--o{ FoodHistory : "is_viewed_in (1:N)"
 User {
     Long id PK
     String email
@@ -80,12 +82,13 @@ RecipeStep {
     String content_ko
 }
 
-FoodHistory {
-    Long id PK
-    Long user_id FK
-    Long food_id FK
-    DateTime viewed_at
-}
+
+ FoodHistory {
+        Long id PK
+        Long user_id FK
+        Long food_id FK
+        DateTime viewed_at
+    }
 
 ```
 ### 🔹 Data Flow
