@@ -48,9 +48,9 @@ Logic <-->|HTTP / WebClient| AI
 ### 🔹 ER Diagram (Entity Relationship)
 ```mermaid
 erDiagram
-User ||--o{ FoodHistory : "views"
- User ||--o{ FoodHistory : "views (1:N)"  
-Food ||--o{ FoodHistory : "is_viewed_in"
+
+User ||--o{ FoodHistory : "views (1:N)"  
+
 Food ||--|{ Ingredient : "has"
 Food ||--|{ RecipeStep : "has"
 Food ||--o{ FoodHistory : "is_viewed_in (1:N)"
