@@ -89,6 +89,17 @@ public class InferService {
     public FoodAnalysisResponse analyzeFood(MultipartFile file, String locale,User user) throws IOException {
         // 1. FastAPI로 이미지 전송 및 예측 결과 수신
         PredictResponse aiResponse = callAiModel(file);
+
+//        // [추가] 확신이 없으면 거절하기 (0.5는 50%, 기준은 테스트하며 조절)
+//        if (aiResponse.getDishConfidence() < 0.6) {
+//            throw new IllegalArgumentException("음식을 확실하게 인식하지 못했습니다. 더 선명한 사진을 올려주세요.");
+//        }
+        if (aiResponse.getDishConfidence() < 0.8){
+            return FoodAnalysisResponse.builder()
+                    .success(false) // 실패!
+                    .message("음식이 명확하지 않아요. (" + (int)(aiResponse.getDishConfidence()*100) + "%)\n더 선명한 한식 사진을 올려주세요.")
+                    .build();
+        }
         String predictedName = aiResponse.getDish();
         if (predictedName == null) {
             throw new IllegalArgumentException("음식을 식별할 수 없습니다 (메인 카테고리만 식별됨).");
@@ -147,6 +158,8 @@ public class InferService {
                 .collect(Collectors.toList());
 
         return FoodAnalysisResponse.builder()
+                .success(true) // 성공!
+                .message("분석 완료")
                 .aiLabel(aiResponse.getDish()) // 수정됨
                 .confidence(aiResponse. getDishConfidence())
                 .name(isKorean ? food.getNameKo() : food.getNameEn())

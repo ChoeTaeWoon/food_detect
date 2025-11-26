@@ -11,6 +11,8 @@ public class FoodAnalysisResponse {
     // AI 예측 정보
     private String aiLabel;       // 모델이 예측한 영어 라벨 (kimchi_stew)
     private Double confidence;    // 정확도 (98.5%)
+    private boolean success;   // [추가] 성공 여부 (true/false)
+    private String message;    // [추가] 실패 시 보여줄 메시지 ("인식 실패", "성공" 등)
 
     // DB 음식 정보 (언어 필터링 적용됨)
     private String name;          // 음식 이름 (김치찌개 or Kimchi Stew)

@@ -1,26 +1,67 @@
+-- -- 1. 김치찌개 (AI 라벨: kimchi_stew)
+-- INSERT INTO food (english_label, name_ko, name_en, description_ko, description_en)
+-- VALUES (
+--            'kimchi_stew',
+--            '김치찌개', 'Kimchi Stew',
+--            '한국인이 가장 사랑하는 얼큰한 찌개 요리입니다.', 'A spicy Korean stew made with kimchi, pork, and tofu.'
+--        );
+--
+-- -- 김치찌개 재료 (ID: 1)
+-- INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '김치', 'Kimchi', '200g', '200g');
+-- INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '돼지고기', 'Pork', '100g', '100g');
+-- INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '두부', 'Tofu', '1/2모', '1/2 block');
+-- INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '대파', 'Green Onion', '1대', '1 stalk');
+--
+-- -- 김치찌개 레시피 (ID: 1)
+-- INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
+-- VALUES (1, 1, '냄비에 식용유를 두르고 돼지고기를 볶습니다.', 'Stir-fry the pork in a pot with some oil.');
+--
+-- INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
+-- VALUES (1, 2, '고기가 익으면 김치를 넣고 함께 볶아줍니다.', 'When the meat is cooked, add kimchi and stir-fry together.');
+--
+-- INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
+-- VALUES (1, 3, '물을 붓고 끓이다가 두부와 대파를 넣고 마무리합니다.', 'Pour in water, boil, then add tofu and green onions to finish.');
 -- 1. 김치찌개 (AI 라벨: kimchi_stew)
 INSERT INTO food (english_label, name_ko, name_en, description_ko, description_en)
 VALUES (
            'kimchi_stew',
            '김치찌개', 'Kimchi Stew',
-           '한국인이 가장 사랑하는 얼큰한 찌개 요리입니다.', 'A spicy Korean stew made with kimchi, pork, and tofu.'
+           '신김치와 돼지고기, 두부를 넣고 얼큰하게 끓여내는 한국인의 대표적인 가정식 찌개입니다.', 'A spicy Korean stew made with fermented kimchi, pork, tofu, and vegetables, beloved as everyday home cooking.'
        );
 
 -- 김치찌개 재료 (ID: 1)
-INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '김치', 'Kimchi', '200g', '200g');
-INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '돼지고기', 'Pork', '100g', '100g');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '신김치', 'Sour Kimchi', '2컵 (300g)', '2 cups (300g)');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '돼지고기 (목살 또는 삼겹살)', 'Pork Neck or Belly', '150g', '150g');
 INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '두부', 'Tofu', '1/2모', '1/2 block');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '양파', 'Onion', '1/2개', '1/2 ea');
 INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '대파', 'Green Onion', '1대', '1 stalk');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '청양고추', 'Korean Chili Pepper', '1~2개', '1-2 ea');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '김치국물', 'Kimchi Brine', '1/2컵', '1/2 cup');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '고춧가루', 'Red Chili Flakes', '1큰술', '1 tbsp');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '다진 마늘', 'Minced Garlic', '1큰술', '1 tbsp');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '국간장', 'Soup Soy Sauce', '1큰술', '1 tbsp');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '참기름', 'Sesame Oil', '1큰술', '1 tbsp');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '물 또는 멸치육수', 'Water or Anchovy Broth', '2.5컵', '2.5 cups');
+INSERT INTO ingredient (food_id, name_ko, name_en, amount_ko, amount_en) VALUES (1, '식용유', 'Cooking Oil', '1큰술', '1 tbsp');
 
 -- 김치찌개 레시피 (ID: 1)
 INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
-VALUES (1, 1, '냄비에 식용유를 두르고 돼지고기를 볶습니다.', 'Stir-fry the pork in a pot with some oil.');
+VALUES (1, 1, '돼지고기는 한입 크기로 썰어 소금과 후추로 밑간하고, 김치는 속을 털어내고 먹기 좋게 썰어둡니다.', 'Cut the pork into bite-sized pieces and season with salt and pepper. Remove excess filling from the kimchi and cut into bite-sized pieces.');
 
 INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
-VALUES (1, 2, '고기가 익으면 김치를 넣고 함께 볶아줍니다.', 'When the meat is cooked, add kimchi and stir-fry together.');
+VALUES (1, 2, '양파는 채 썰고, 두부는 깍둑썰기하며, 대파와 청양고추는 어슷 썰어 준비합니다.', 'Slice the onion, cut the tofu into cubes, and slice the green onion and chili peppers diagonally.');
 
 INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
-VALUES (1, 3, '물을 붓고 끓이다가 두부와 대파를 넣고 마무리합니다.', 'Pour in water, boil, then add tofu and green onions to finish.');
+VALUES (1, 3, '냄비에 식용유와 참기름을 두르고 돼지고기를 중불에서 볶다가 고기가 반쯤 익으면 김치를 넣고 함께 3~4분간 볶아 김치의 맛을 깊게 합니다.', 'Heat cooking oil and sesame oil in a pot, stir-fry the pork over medium heat, and when half-cooked, add the kimchi and stir-fry together for 3-4 minutes to deepen the flavor.');
+
+INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
+VALUES (1, 4, '고춧가루와 다진 마늘을 넣고 볶다가 김치국물과 물(또는 멸치육수)을 부어 센 불에서 끓입니다.', 'Add chili flakes and minced garlic, stir-fry briefly, then pour in kimchi brine and water (or anchovy broth) and bring to a boil over high heat.');
+
+INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
+VALUES (1, 5, '끓어오르면 중불로 줄이고 국간장으로 간을 맞춘 뒤 10분 정도 더 끓여 김치가 잘 익도록 합니다.', 'Once boiling, reduce to medium heat, season with soup soy sauce, and simmer for about 10 minutes until the kimchi is well-cooked.');
+
+INSERT INTO recipe_step (food_id, step_order, content_ko, content_en)
+VALUES (1, 6, '양파와 두부를 넣고 5분 정도 더 끓인 후, 마지막에 대파와 청양고추를 넣고 한소끔 끓여 완성합니다.', 'Add the onion and tofu and simmer for another 5 minutes. Finally, add the green onion and chili peppers, bring to one last boil, and serve.');
 
 
 -- 2. 닭갈비 (Dakgalbi) - ID 2번 강제 지정
