@@ -148,19 +148,21 @@ AI 모델이 분류할 수 있는 요리의 메인 정보를 담고 있는 테�
 ### 🔹 JSON Example (이미지 분석 결과)
 사용자가 이미지를 업로드하면(`POST /api/ai/predict`), 서버는 다음과 같은 **JSON** 데이터를 응답합니다.
 {
-"aiLabel": "kimchi_stew",
-"confidence": 0.98,
-"name": "김치찌개",
-"description": "한국인이 가장 사랑하는 얼큰한 찌개 요리입니다.",
-"ingredients": [
-{ "name": "김치", "amount": "200g" },
-{ "name": "돼지고기", "amount": "100g" }
-],
-"recipeSteps": [
-{ "stepOrder": 1, "content": "냄비에 식용유를 두르고 돼지고기를 볶습니다." },
-{ "stepOrder": 2, "content": "고기가 익으면 김치를 넣고 함께 볶아줍니다." }
-]
+  "success": true,
+  "message": "분석 완료",
+  "aiLabel": "kimchi_stew",
+  "confidence": 0.98,
+  "name": "김치찌개",
+  "description": "한국인이 사랑하는 얼큰한 찌개입니다.",
+  "ingredients": [
+    { "name": "김치", "amount": "200g" },
+    { "name": "돼지고기", "amount": "100g" }
+  ],
+  "recipeSteps": [
+    { "stepOrder": 1, "content": "고기를 볶습니다." }
+  ]
 }
+<img width="663" height="473" alt="image" src="https://github.com/user-attachments/assets/6026b566-0e2d-4b8e-8701-4ed4a9fbe37a" />
 
 ### 🔹 Data Exchange Protocol
 1.  **Client Request**: 
