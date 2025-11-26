@@ -147,6 +147,7 @@ AI 모델이 분류할 수 있는 요리의 메인 정보를 담고 있는 테�
 | **내 정보 조회** | `GET` | `/api/users/me` | Header (Bearer Token) | `JSON` (User Info) |
 | **이미지 분석** | `POST` | `/api/ai/predict` | `Multipart` (file, locale) | `JSON` (Food, Recipe...) |
 | **기록 조회** | `GET` | `/api/users/me/history`| Header (Bearer Token) | `JSON` (History List) |
+| **음식 상세 조회** | `GET` | `/api/food/{id}`| Header (Bearer Token) Query:locale=ko/en | `JSON` (Food Detail) |
 
 ### 🔹 JSON Example (이미지 분석 결과)
 
