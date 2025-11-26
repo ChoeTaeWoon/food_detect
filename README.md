@@ -1,5 +1,5 @@
 graph TD
-    Client[📱 Frontend<br>(Mobile/Web)]
+    Client[ Frontend<br>(Mobile/Web)]
     
     subgraph "Spring Boot (Main Server)"
         Gateway[API Gateway / Security]
